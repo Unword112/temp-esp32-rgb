@@ -3,7 +3,6 @@
 #include <PubSubClient.h>
 #include <DHT.h>
 
-// WiFi and MQTT Configuration
 const char* ssid = "Wokwi-GUEST";
 const char* password = "";
 const char* mqtt_server = "demo.thingsboard.io";
@@ -11,17 +10,14 @@ const char* ID = "2da86770-f6a6-11ef-8e00-e370a74757c3";
 const char* token = "eN7Ny6EDpSzARiDrxU9E";
 const int port = 1883;
 
-// Define Pins for RGB LED
 #define R 5
 #define G 4
 #define B 2
 
-// Define Pins for DHT Sensor
 #define DHTPIN 32
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 
-// อุณหภูมิที่ใช้กำหนดสี
 #define TEMP_MIN 17.22  
 #define TEMP_MAX 36.11  
 
@@ -48,14 +44,12 @@ void reconnect() {
   }
 }
 
-// ✅ ใช้ analogWrite() ควบคุมไฟ RGB
 void setColor(int red, int green, int blue) {
   analogWrite(R, red);
   analogWrite(G, green);
   analogWrite(B, blue);
 }
 
-// ✅ ส่งข้อมูลไปยัง ThingsBoard (รวมอุณหภูมิ และสี)
 void sendTemperature(float temp, String colorHex) {
   String payload = "{\"temperature\": " + String(temp, 1) + ", \"led_color\": \"" + colorHex + "\"}";
   client.publish("v1/devices/me/telemetry", payload.c_str());
